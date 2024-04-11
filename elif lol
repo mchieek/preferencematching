@@ -1,0 +1,5 @@
+    elif internship_preferences.index(student) < internship_preferences.index(opposing_student):
+        current_matches.update({student: internship})
+        unmatched_students.pop(student)
+        unmatched_students.add(opposing_student)
+    else: # do nothing
