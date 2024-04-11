@@ -1,0 +1,21 @@
+students: dict = {
+    'Trillian': ['Physics', 'Sociology', 'Philosophy'],
+    'Ford': ['Physics', 'Philosophy', 'Sociology'],
+    'Zaphod': ['Philosophy', 'Sociology', 'Physics']
+}
+internships: dict = {
+    'Physics': ['Trillian', 'Ford', 'Zaphod'],
+    'Sociology': ['Ford', 'Trillian', 'Zaphod'],
+    'Philosophy': ['Ford', 'Trillian', 'Zaphod']
+}
+
+unmatched_students: set = set(students.keys())
+current_matches: dict[str] = dict()
+
+for student in unmatched_students:
+    internship = students[student][0]
+    students[student].pop(0)
+    if internship not in current_matches:
+        current_matches.update({student: internship})
+
+print(current_matches)
