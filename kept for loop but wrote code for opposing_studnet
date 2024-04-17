@@ -1,0 +1,33 @@
+students: dict = {
+    'Trillian': ['Physics', 'Sociology', 'Philosophy'],
+    'Ford': ['Physics', 'Philosophy', 'Sociology'],
+    'Zaphod': ['Philosophy', 'Sociology', 'Physics']
+}
+internships: dict = {
+    'Physics': ['Trillian', 'Ford', 'Zaphod'],
+    'Sociology': ['Ford', 'Trillian', 'Zaphod'],
+    'Philosophy': ['Ford', 'Trillian', 'Zaphod']
+}
+
+unmatched_students: set = set(students.keys())
+iteration_students = unmatched_students
+current_matches: dict[str] = dict()
+
+for student in iteration_students:
+    print(student)
+    internship = students.get(student)[0]
+    print(internship)
+    internship_preferences = internships.get(internship)
+    students[student].pop(0)
+    for match_student, match_internship in current_matches.items():
+        if match_internship == internship:
+            opposing_student = match_student
+    if internship not in current_matches.values():
+        current_matches.update({student: internship})
+    elif internship_preferences.index(student) < internship_preferences.index(opposing_student):
+        current_matches.update({student: internship})
+        unmatched_students.remove(student)
+        unmatched_students.add(opposing_student)
+    print(current_matches)
+
+print(current_matches)
