@@ -1,0 +1,50 @@
+student_preferences: dict = {
+    'Trillian': ['Physics', 'Sociology', 'Philosophy'],
+    'Ford': ['Physics', 'Philosophy', 'Sociology'],
+    'Zaphod': ['Philosophy', 'Sociology', 'Physics']
+}
+internship_preferences: dict = {
+    'Physics': ['Trillian', 'Ford', 'Zaphod'],
+    'Sociology': ['Ford', 'Trillian', 'Zaphod'],
+    'Philosophy': ['Ford', 'Trillian', 'Zaphod']
+}
+
+current_matches: dict[str] = dict()
+unmatched_students: list = list(student_preferences.keys())
+
+print(student_preferences)
+print(internship_preferences)
+
+# while students are unmatched
+while len(unmatched_students) > 0:
+
+    # get the first unmatched student from list of unmatched students
+    current_student = unmatched_students[0]
+    unmatched_students.pop(0)
+    print(current_student)
+
+    # get preference list of the student: go into student preferences dictionary with student as key
+    current_student_preference = student_preferences[current_student]
+    print(current_student_preference)
+
+    # remove internship from the list
+    internship = current_student_preference[0]
+    current_student_preference.pop(0)
+
+    # matching students with internships
+    # if internship has not been taken
+    if internship not in current_matches:
+        current_matches.update({internship: current_student})
+        # If it is matched, check if the current student is preferred over the current match (i.e. 
+        #If the applying student is preferred, match the student to the internship, remove them from the set of unmatched students, and add the previous student back to the set of unmatched students
+        #If the previous student is preferred, do nothing
+    else:
+        # go into matched internships with internship as the key
+        opposing_student = current_matches[internship]
+        # check if index of current student in internship preferences is lower than index of internship in student preferences)
+        if internship_preferences.index(current_student) < internship_preferences.index[opposing_student]:
+            current_matches[internship] = opposing_student
+            unmatched_students.remove(opposing_student)
+            unmatched_students.add(current_student)
+
+print(current_matches)
