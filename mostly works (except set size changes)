@@ -1,0 +1,58 @@
+"""### Stable Matching: Gale-Shapley Algorithm
+
+We will be trying to find a stable matching between two sets of elements. Each element in the first set has a preference list of all the elements in the second set, and vice versa. The Gale-Shapley algorithm will find a stable matching between the two sets, meaning that there are no two elements that would prefer to be matched with each other over their current pairings. This algorithm can for instance be used to match students to internship positions, where each student has a preference list of internships, and each internship has a preference list of students.
+
+In order to run the Gale-Shapley algorithm, you will need the following data structures:
+
+- A `dict` of student -> `list` of internships, representing the preference list of each student
+- A `dict` of internship -> `list` of students, representing the preference list of each internship
+- A `dict` of internship -> student, representing the current matching of internships to students (initially empty)
+- A `set` of students that are still unmatched (initially containing all students, using e.g. `set(students.keys())`)
+
+While there are still unmatched students (i.e. while the `set` of unmatched students is not empty), you will keep performing the following steps:
+
+1. Get the first unmatched student from the set of unmatched students
+2. Get the preference list of the student, and take and remove the first internship from this list (using e.g. `student_preferences.pop(0)`): the student applies to this internship
+3. Check if this internship is already matched to a student (i.e. if the internship is in the `dict` of current matches)
+    - If it is not matched, match the student to the internship and remove them from the set of unmatched students
+    - If it is matched, check if the current student is preferred over the current match (i.e. if the index of the current student in the preference list is lower than the index of the current match)
+        - If the applying student is preferred, match the student to the internship, remove them from the set of unmatched students, and add the previous student back to the set of unmatched students
+        - If the previous student is preferred, do nothing
+
+After the algorithm has finished, you can print the matching of students to internships to check the result!"""
+
+
+students: dict = {
+    'Trillian': ['Physics', 'Sociology', 'Philosophy'],
+    'Ford': ['Physics', 'Philosophy', 'Sociology'],
+    'Zaphod': ['Philosophy', 'Sociology', 'Physics']
+}
+internships: dict = {
+    'Physics': ['Trillian', 'Ford', 'Zaphod'],
+    'Sociology': ['Ford', 'Trillian', 'Zaphod'],
+    'Philosophy': ['Ford', 'Trillian', 'Zaphod']
+}
+
+unmatched_students: set = set(students.keys())
+iteration_students = unmatched_students
+current_matches: dict[str] = dict()
+
+for student in iteration_students:
+    print(student)
+    for i in range(3):
+        internship = students.get(student)[0]
+        print(internship)
+        internship_preferences = internships.get(internship)
+        students[student].pop(0)
+        for match_student, match_internship in current_matches.items():
+            if match_internship == internship:
+                opposing_student = match_student
+        if internship not in current_matches.values():
+            current_matches.update({student: internship})
+            continue
+        elif internship_preferences.index(student) < internship_preferences.index(opposing_student):
+            current_matches.update({student: internship})
+            unmatched_students.remove(student)
+            unmatched_students.add(opposing_student)
+            continue
+    print(current_matches)
