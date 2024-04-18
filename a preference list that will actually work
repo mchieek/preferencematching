@@ -1,0 +1,6 @@
+preferences = {
+    'Alice': ['Bob', 'Carol', 'Dave'],
+    'Bob': ['Carol', 'Dave', 'Alice'],
+    'Carol': ['Dave', 'Alice', 'Bob'],
+    'Dave': ['Alice', 'Bob', 'Carol']
+}
