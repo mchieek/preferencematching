@@ -1,0 +1,37 @@
+students: dict = {
+    'Trillian': ['Physics', 'Sociology', 'Philosophy'],
+    'Ford': ['Physics', 'Philosophy', 'Sociology'],
+    'Zaphod': ['Philosophy', 'Sociology', 'Physics']
+}
+internships: dict = {
+    'Physics': ['Trillian', 'Ford', 'Zaphod'],
+    'Sociology': ['Ford', 'Trillian', 'Zaphod'],
+    'Philosophy': ['Ford', 'Trillian', 'Zaphod']
+}
+unmatched_students: list = list(students.keys())
+current_matches: dict[str] = dict()
+rounds = 0
+
+# Runs through each student that has not been matched until all students are matched
+while unmatched_students != []:
+    student = unmatched_students[0]
+    # Gets the most preferred internship for the student
+    internship = students[student].pop(0)
+    # Gets all the preferred students for the current internship
+    internship_preferences = internships.get(internship)
+    # Obtain (opposing) student that is matched to the current internship
+    for match_student, match_internship in current_matches.items():
+        if match_internship == internship:
+            opposing_student = match_student
+    # Match internship to student if the current internship is unmatched
+    if internship not in current_matches.values():
+        current_matches.update({student: internship})
+        unmatched_students.remove(student)
+    # Match the internship to either the current or opposing student by internship preference
+    elif internship_preferences.index(student) < internship_preferences.index(opposing_student): # HELP
+        current_matches.update({student: internship})
+        unmatched_students.remove(student)
+        unmatched_students.add(opposing_student)
+    rounds += 1
+print(current_matches)
+print(f'The matching took {rounds} round(s).')
