@@ -1,0 +1,55 @@
+from copy import deepcopy
+
+"""If you want to challenge yourself, you can try to implement the Stable Roommates problem instead of the Gale-Shapley algorithm. The Stable Roommates
+problem is a variant of the Gale-Shapley algorithm where all elements are from the same pool of candidates. This means that each element has a
+preference list of all the other elements, and the goal is to find a stable pairwise matching between all the elements. You can use the same data
+structures as in the Gale-Shapley algorithm, but you will need to modify the algorithm to work with the same pool of candidates (which also means
+you will only have a single dictionary with preferences, namely students to other students). Note that, unlike the Gale-Shapley algorithm, if you
+match one student to another, then you also need to match the other student back to the first student! (If student A has student B as their roommate,
+then naturally student B has student A as their roommate as well.)
+
+Another important note is that, unlike the Gale-Shapley algorithm, the Stable Roommates problem does not always have a stable solution, depending on
+your initial preferences. If you find that your solution is not stable, you can try to modify the preferences to find a stable solution."""
+
+roommate_preferences: dict = {
+    'Amy': ['Beth', 'Catie', 'Daisy'],
+    'Beth': ['Catie', 'Amy', 'Daisy'],
+    'Catie': ['Amy', 'Beth', 'Daisy'],
+    'Daisy': ['Amy', 'Beth', 'Catie']
+}
+copy_roommate_preferences = deepcopy(roommate_preferences)
+unmatched_students: list = list(roommate_preferences.keys())
+current_matches: dict[str] = dict()
+rounds = 0
+
+# Runs through each student that has not been matched until all students are matched
+while unmatched_students != []:
+    student_a = unmatched_students[0]
+    print(student_a)
+    # Gets the most preferred roomate for the student
+    student_b = roommate_preferences[student_a].pop(0)
+    print(student_b)
+    # Gets all the preferred roommates for both students
+    student_a_preferences = copy_roommate_preferences.get(student_a)
+    student_b_preferences = copy_roommate_preferences.get(student_b)
+    b_preferences = student_b_preferences.copy()
+    # Obtain (opposing) student that is matched to the current internship
+    for match_student_a, match_student_b in current_matches.items():
+        if match_student_b == student_b:
+            opposing_student = match_student_a
+    # Match internship to student if the current internship is unmatched
+    if student_b not in current_matches.values():
+        current_matches.update({student_a: student_b})
+        current_matches.update({student_b: student_a})
+        unmatched_students.remove(student_a)
+        unmatched_students.remove(student_b)
+    # Match the internship to either the current or opposing student by internship preference
+    elif student_b_preferences.index(student_a) < student_b_preferences.index(opposing_student):
+        current_matches.update({student_a: student_b})
+        current_matches.update({student_b: student_a})
+        unmatched_students.remove(student_a)
+        unmatched_students.append(opposing_student)
+    rounds += 1
+    print(current_matches)
+print(current_matches)
+print(f'The matching took {rounds} round(s).')
