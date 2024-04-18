@@ -1,0 +1,8 @@
+roommate_preferences: dict = {
+   
+    'Amy': ['Beth', 'Catie', 'Daisy'],
+    'Beth': ['Catie', 'Amy', 'Daisy'],
+    'Catie': ['Amy', 'Beth', 'Daisy'],
+    'Daisy': ['Amy', 'Beth', 'Catie']
+    
+}
